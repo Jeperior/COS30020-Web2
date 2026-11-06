@@ -1,67 +1,51 @@
 <?php
-session_start();
-?>
-<?php
 
-$contributions = [
+// Check that the user is logged in with a regular user account
+require_once "auth.php";
+requireLogin("user");
 
-    1 => [
-        "title" => "My First Sarawak Laksa",
-        "image" => "image/food1.jpg",
-        "contributor" => "Jason",
-        "related" => "Sarawak Laksa Cooking Experience",
-        "description" => "Finally tried making Sarawak laksa at home! The flavour turned out better than expected."
-    ],
+// Connect to the database
+require_once "db.php";
 
-    2 => [
-        "title" => "My Homemade Kek Lapis",
-        "image" => "image/food2.jpg",
-        "contributor" => "Amelia",
-        "related" => "Traditional Sarawak Food Workshop",
-        "description" => "Tried making a traditional Sarawak layer cake for the first time."
-    ],
+// Retrieve the contribution ID from the URL
+$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
-    3 => [
-        "title" => "My Favourite Kolo Mee",
-        "image" => "image/food3.jpg",
-        "contributor" => "Daniel",
-        "related" => "Kuching Local Food Tour",
-        "description" => "A simple bowl of kolo mee that has become one of my favourite local meals."
-    ],
-
-    4 => [
-        "title" => "Exploring Satok Market",
-        "image" => "image/food4.jpg",
-        "contributor" => "Sarah",
-        "related" => "Satok Food Market Experience",
-        "description" => "A short walkthrough of the food stalls and local ingredients found at Satok Market."
-    ],
-
-    5 => [
-        "title" => "Cooking Manok Pansuh",
-        "image" => "image/food1.jpg",
-        "contributor" => "Michael",
-        "related" => "Traditional Sarawak Cooking Experience",
-        "description" => "Sharing my experience trying one of Sarawak's traditional dishes."
-    ],
-
-    6 => [
-        "title" => "Discovering Sarawak Coffee",
-        "image" => "image/food2.jpg",
-        "contributor" => "Kevin",
-        "related" => "Sarawak Local Products",
-        "description" => "Found a local coffee that quickly became part of my morning routine."
-    ]
-
-];
-
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-
-if (!isset($contributions[$id])) {
-    $id = 1;
+// Check whether a valid contribution ID was provided
+if (!$id || $id <= 0) {
+    header("Location: community.php");
+    exit;
 }
 
-$contribution = $contributions[$id];
+// Retrieve the selected contribution from the database
+$sql = "SELECT id, first_name, last_name, contribution_image,
+               related_activity, status
+        FROM community_table
+        WHERE id = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$contribution = $result->fetch_assoc();
+
+$stmt->close();
+
+// Redirect if the requested contribution does not exist
+if (!$contribution) {
+    header("Location: community.php");
+    exit;
+}
+
+// Prepare the contributor's full name
+$contributor = $contribution["first_name"] . " " . $contribution["last_name"];
+
+// Escape output to prevent HTML injection
+$contributor = htmlspecialchars($contributor, ENT_QUOTES, "UTF-8");
+$relatedActivity = htmlspecialchars($contribution["related_activity"], ENT_QUOTES, "UTF-8");
+
+// Check whether a contribution image is available
+$image = $contribution["contribution_image"];
 
 ?>
 
@@ -76,7 +60,7 @@ $contribution = $contributions[$id];
 
     <link rel="stylesheet" href="style/style.css">
 
-    <title><?php echo $contribution["title"]; ?> | Kuching Bites</title>
+    <title>Community Contribution | Kuching Bites</title>
 
 </head>
 
@@ -96,43 +80,38 @@ $contribution = $contributions[$id];
             <a href="index.php">Home</a>
             <a href="main_menu.php">Explore</a>
             <a href="profile.php">Profile</a>
-            <?php if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true): ?>
 
-                <span class="nav-user">
-                    Logged in
-                </span>
+            <span class="nav-user">
+                Logged in
+            </span>
 
-                <a href="logout.php">
-                    Logout
-                </a>
-
-            <?php else: ?>
-
-                <a href="login.php">
-                    Login
-                </a>
-
-                <a href="registration.php">
-                    Register
-                </a>
-
-            <?php endif; ?>
+            <a href="logout.php">
+                Logout
+            </a>
         </nav>
 
     </header>
 
     <main>
 
-        <!-- Detail Page -->
+        <!-- Community Contribution Detail -->
 
         <section class="community-detail">
 
             <div class="community-detail-image">
 
-                <img
-                    src="<?php echo $contribution["image"]; ?>"
-                    alt="<?php echo $contribution["title"]; ?>"
-                >
+                <?php if (!empty($image)): ?>
+
+                    <img
+                        src="<?php echo htmlspecialchars($image, ENT_QUOTES, "UTF-8"); ?>"
+                        alt="Community contribution by <?php echo $contributor; ?>"
+                    >
+
+                <?php else: ?>
+
+                    <p>No contribution image available.</p>
+
+                <?php endif; ?>
 
             </div>
 
@@ -143,11 +122,12 @@ $contribution = $contributions[$id];
                 </p>
 
                 <h2>
-                    <?php echo $contribution["title"]; ?>
+                    Contribution by <?php echo $contributor; ?>
                 </h2>
 
                 <p class="community-detail-description">
-                    <?php echo $contribution["description"]; ?>
+                    This contribution is related to
+                    <?php echo $relatedActivity; ?>.
                 </p>
 
                 <div class="community-detail-info">
@@ -157,7 +137,7 @@ $contribution = $contributions[$id];
                         <span>CONTRIBUTOR</span>
 
                         <strong>
-                            <?php echo $contribution["contributor"]; ?>
+                            <?php echo $contributor; ?>
                         </strong>
 
                     </div>
@@ -167,7 +147,7 @@ $contribution = $contributions[$id];
                         <span>RELATED ACTIVITY / SERVICE</span>
 
                         <strong>
-                            <?php echo $contribution["related"]; ?>
+                            <?php echo $relatedActivity; ?>
                         </strong>
 
                     </div>

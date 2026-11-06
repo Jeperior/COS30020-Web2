@@ -1,56 +1,74 @@
 <?php
-session_start();
-?>
-<?php
 
-/* =========================
-   READ USER DATA
-   ========================= */
+// Check that the user is logged in with a regular user account
+require_once "auth.php";
+requireLogin("user");
 
-$dataFile = "data/users.txt";
+// Connect to the database
+require_once "db.php";
 
-/* Default information */
+// Retrieve the logged-in user's email from the session
+$email = $_SESSION["email"];
 
-$user = [
-    "name" => "Jason Pangestu",
-    "email" => "104404033@students.swinburne.edu.my",
-    "gender" => "Male"
-];
+// Retrieve the user's profile information from the database
+$sql = "SELECT first_name, last_name, email, gender, hometown,
+               profile_image, supporting_document
+        FROM user_table
+        WHERE email = ?";
 
-/* =========================
-   READ STORED INFORMATION
-   ========================= */
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
 
-if (file_exists($dataFile)) {
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
-    $lines = file(
-        $dataFile,
-        FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
-    );
+$stmt->close();
 
-    if (!empty($lines)) {
-
-        /*
-         * users.txt format:
-         *
-         * Name|Email|Gender
-         */
-
-        $data = explode("|", $lines[0]);
-
-        if (isset($data[0])) {
-            $user["name"] = trim($data[0]);
-        }
-
-        if (isset($data[1])) {
-            $user["email"] = trim($data[1]);
-        }
-
-        if (isset($data[2])) {
-            $user["gender"] = trim($data[2]);
-        }
-    }
+// Redirect to logout if the user's database record cannot be found
+if (!$user) {
+    header("Location: logout.php");
+    exit;
 }
+
+// Prepare the user's full name
+$name = htmlspecialchars(
+    $user["first_name"] . " " . $user["last_name"],
+    ENT_QUOTES,
+    "UTF-8"
+);
+
+// Escape user information before displaying it
+$userEmail = htmlspecialchars($user["email"], ENT_QUOTES, "UTF-8");
+$gender = htmlspecialchars($user["gender"], ENT_QUOTES, "UTF-8");
+$hometown = htmlspecialchars($user["hometown"], ENT_QUOTES, "UTF-8");
+
+// Use the default profile image when the user has not uploaded one
+$profileImage = !empty($user["profile_image"])
+    ? $user["profile_image"]
+    : "image/defaultprofile.png";
+
+$profileImage = htmlspecialchars(
+    $profileImage,
+    ENT_QUOTES,
+    "UTF-8"
+);
+
+// Check whether the user has uploaded a supporting PDF document
+$supportingDocument = $user["supporting_document"] ?? "";
+
+$hasSupportingDocument = (
+    !empty($supportingDocument) &&
+    strpos($supportingDocument, "resume/") === 0 &&
+    is_file(__DIR__ . "/" . $supportingDocument)
+);
+
+// Escape the supporting document path before displaying it
+$supportingDocument = htmlspecialchars(
+    $supportingDocument,
+    ENT_QUOTES,
+    "UTF-8"
+);
 
 ?>
 
@@ -65,7 +83,6 @@ if (file_exists($dataFile)) {
           content="width=device-width, initial-scale=1.0">
 
     <!-- Main stylesheet -->
-
     <link
         rel="stylesheet"
         href="style/style.css?v=1"
@@ -89,39 +106,19 @@ if (file_exists($dataFile)) {
 
         <nav>
 
-            <a href="index.php">
-                Home
+            <a href="index.php">Home</a>
+
+            <a href="main_menu.php">Explore</a>
+
+            <a href="profile.php">Profile</a>
+
+            <span class="nav-user">
+                Logged in
+            </span>
+
+            <a href="logout.php">
+                Logout
             </a>
-
-            <a href="main_menu.php">
-                Explore
-            </a>
-
-            <a href="profile.php">
-                Profile
-            </a>
-
-            <?php if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true): ?>
-
-                <span class="nav-user">
-                    Logged in
-                </span>
-
-                <a href="logout.php">
-                    Logout
-                </a>
-
-            <?php else: ?>
-
-                <a href="login.php">
-                    Login
-                </a>
-
-                <a href="registration.php">
-                    Register
-                </a>
-
-            <?php endif; ?>
 
         </nav>
 
@@ -145,8 +142,8 @@ if (file_exists($dataFile)) {
 
                         <img
                             id="profile-slideshow"
-                            src="image/profile1.jpeg"
-                            alt="Profile photo"
+                            src="<?php echo $profileImage; ?>"
+                            alt="Profile photo of <?php echo $name; ?>"
                         >
 
                     </div>
@@ -159,31 +156,74 @@ if (file_exists($dataFile)) {
                         KUCHING BITES
                     </p>
 
-                    <!-- NAME FROM TEXT FILE -->
+                    <!-- Display the user's name -->
 
                     <h2>
-                        <?php echo htmlspecialchars($user["name"]); ?>
+                        <?php echo $name; ?>
                     </h2>
+
+                    <!-- Display the user's email -->
 
                     <p>
 
                         <strong>
-                            Student ID:
+                            Email:
                         </strong>
 
-                        104404033
+                        <?php echo $userEmail; ?>
 
                     </p>
 
-                    <!-- EMAIL FROM TEXT FILE -->
+                    <!-- Display the user's gender -->
 
                     <p>
 
                         <strong>
-                            Student Email:
+                            Gender:
                         </strong>
 
-                        <?php echo htmlspecialchars($user["email"]); ?>
+                        <?php echo $gender; ?>
+
+                    </p>
+
+                    <!-- Display the user's hometown -->
+
+                    <p>
+
+                        <strong>
+                            Hometown:
+                        </strong>
+
+                        <?php echo $hometown; ?>
+
+                    </p>
+
+                    <!-- Display the user's supporting document -->
+
+                    <p>
+
+                        <strong>
+                            Supporting Document:
+                        </strong>
+
+                        <?php if ($hasSupportingDocument): ?>
+
+                            <a
+                                href="<?php echo $supportingDocument; ?>"
+                                class="btn btn-primary"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                View Supporting Document
+                            </a>
+
+                        <?php else: ?>
+
+                            <span>
+                                No supporting document uploaded.
+                            </span>
+
+                        <?php endif; ?>
 
                     </p>
 
@@ -309,38 +349,13 @@ if (file_exists($dataFile)) {
 
     </footer>
 
-    <!-- =========================
-         PROFILE PHOTO SLIDESHOW
-         ========================= -->
-
-    <script>
-
-        const profileImages = [
-            "image/profile1.jpeg",
-            "image/profile2.jpeg",
-            "image/profile3.jpeg"
-        ];
-
-        let currentImage = 0;
-
-        const profilePhoto =
-            document.getElementById("profile-slideshow");
-
-        setInterval(function () {
-
-            currentImage++;
-
-            if (currentImage >= profileImages.length) {
-                currentImage = 0;
-            }
-
-            profilePhoto.src =
-                profileImages[currentImage];
-
-        }, 3000);
-
-    </script>
-
 </body>
 
 </html>
+
+<?php
+
+// Close the database connection
+$conn->close();
+
+?>

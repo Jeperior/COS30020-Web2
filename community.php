@@ -1,16 +1,40 @@
 <?php
+
+// Start the session
 session_start();
+
+// Connect to the database
+require_once "db.php";
+
+// Retrieve approved community contributions from the database
+$sql = "SELECT id, first_name, last_name, contribution_image,
+               related_activity
+        FROM community_table
+        WHERE status = 'approved'
+        ORDER BY id DESC";
+
+$result = $conn->query($sql);
+
+// Check whether the database query was successful
+if (!$result) {
+    die("Error retrieving community contributions.");
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style/style.css">
 
     <title>Community | Kuching Bites</title>
+
 </head>
 
 <body class="community-page">
@@ -26,9 +50,11 @@ session_start();
         </h1>
 
         <nav>
+
             <a href="index.php">Home</a>
             <a href="main_menu.php">Explore</a>
             <a href="profile.php">Profile</a>
+
             <?php if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true): ?>
 
                 <span class="nav-user">
@@ -50,6 +76,7 @@ session_start();
                 </a>
 
             <?php endif; ?>
+
         </nav>
 
     </header>
@@ -95,257 +122,88 @@ session_start();
 
             <div class="community-grid">
 
-                <!-- =========================
-                     CONTRIBUTION 1
-                     ========================= -->
+                <?php if ($result->num_rows > 0): ?>
 
-                <a href="community_detail.php?id=1" class="community-card">
+                    <?php while ($contribution = $result->fetch_assoc()): ?>
 
-                    <div class="community-image">
+                        <?php
+                        // Prepare contributor information
+                        $id = (int)$contribution["id"];
 
-                        <img
-                            src="image/food1.jpg"
-                            alt="Sarawak Laksa"
-                        >
+                        $contributor = htmlspecialchars(
+                            $contribution["first_name"] . " " . $contribution["last_name"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        );
 
-                        <span class="community-media">
-                            PHOTO
-                        </span>
+                        $relatedActivity = htmlspecialchars(
+                            $contribution["related_activity"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        );
 
-                    </div>
+                        // Check whether a contribution image exists
+                        $image = $contribution["contribution_image"];
+                        ?>
 
-                    <div class="community-card-content">
+                        <!-- Community Contribution Card -->
 
-                        <span class="community-category">
-                            LOCAL DISH
-                        </span>
+                        <a href="community_detail.php?id=<?php echo $id; ?>"
+                           class="community-card">
 
-                        <h3>
-                            My First Sarawak Laksa
-                        </h3>
+                            <div class="community-image">
 
-                        <p>
-                            Finally tried making Sarawak laksa at home!
-                            The flavour turned out better than expected.
-                        </p>
+                                <?php if (!empty($image)): ?>
 
-                        <div class="community-meta">
-                            Shared by Jason · September 2026
-                        </div>
+                                    <img
+                                        src="<?php echo htmlspecialchars($image, ENT_QUOTES, "UTF-8"); ?>"
+                                        alt="Contribution by <?php echo $contributor; ?>"
+                                    >
 
-                    </div>
+                                <?php else: ?>
 
-                </a>
+                                    <p>No image available</p>
 
-                <!-- =========================
-                     CONTRIBUTION 2
-                     ========================= -->
+                                <?php endif; ?>
 
-                <a href="community_detail.php?id=2" class="community-card">
+                                <span class="community-media">
+                                    PHOTO
+                                </span>
 
-                    <div class="community-image">
+                            </div>
 
-                        <img
-                            src="image/food2.jpg"
-                            alt="Sarawak Layer Cake"
-                        >
+                            <div class="community-card-content">
 
-                        <span class="community-media">
-                            PHOTO
-                        </span>
+                                <span class="community-category">
+                                    COMMUNITY CONTRIBUTION
+                                </span>
 
-                    </div>
+                                <h3>
+                                    Contribution by <?php echo $contributor; ?>
+                                </h3>
 
-                    <div class="community-card-content">
+                                <p>
+                                    Shared a contribution related to
+                                    <?php echo $relatedActivity; ?>.
+                                </p>
 
-                        <span class="community-category">
-                            HOMEMADE
-                        </span>
+                                <div class="community-meta">
+                                    Shared by <?php echo $contributor; ?>
+                                </div>
 
-                        <h3>
-                            My Homemade Kek Lapis
-                        </h3>
+                            </div>
 
-                        <p>
-                            Tried making a traditional Sarawak layer cake
-                            for the first time.
-                        </p>
+                        </a>
 
-                        <div class="community-meta">
-                            Shared by Amelia · September 2026
-                        </div>
+                    <?php endwhile; ?>
 
-                    </div>
+                <?php else: ?>
 
-                </a>
+                    <p>
+                        No approved community contributions are available yet.
+                    </p>
 
-                <!-- =========================
-                     CONTRIBUTION 3
-                     ========================= -->
-
-                <a href="community_detail.php?id=3" class="community-card">
-
-                    <div class="community-image">
-
-                        <img
-                            src="image/food3.jpg"
-                            alt="Kolo Mee"
-                        >
-
-                        <span class="community-media">
-                            PHOTO
-                        </span>
-
-                    </div>
-
-                    <div class="community-card-content">
-
-                        <span class="community-category">
-                            LOCAL DISH
-                        </span>
-
-                        <h3>
-                            My Favourite Kolo Mee
-                        </h3>
-
-                        <p>
-                            A simple bowl of kolo mee that has become
-                            one of my favourite local meals.
-                        </p>
-
-                        <div class="community-meta">
-                            Shared by Daniel · August 2026
-                        </div>
-
-                    </div>
-
-                </a>
-
-                <!-- =========================
-                     CONTRIBUTION 4
-                     ========================= -->
-
-                <a href="community_detail.php?id=4" class="community-card">
-
-                    <div class="community-image">
-
-                        <img
-                            src="image/food4.jpg"
-                            alt="Satok Market"
-                        >
-
-                        <span class="community-media">
-                            VIDEO
-                        </span>
-
-                    </div>
-
-                    <div class="community-card-content">
-
-                        <span class="community-category">
-                            FOOD EXPERIENCE
-                        </span>
-
-                        <h3>
-                            Exploring Satok Market
-                        </h3>
-
-                        <p>
-                            A short walkthrough of the food stalls and
-                            local ingredients found at Satok Market.
-                        </p>
-
-                        <div class="community-meta">
-                            Shared by Sarah · August 2026
-                        </div>
-
-                    </div>
-
-                </a>
-
-                <!-- =========================
-                     CONTRIBUTION 5
-                     ========================= -->
-
-                <a href="community_detail.php?id=5" class="community-card">
-
-                    <div class="community-image">
-
-                        <img
-                            src="image/food1.jpg"
-                            alt="Manok Pansuh"
-                        >
-
-                        <span class="community-media">
-                            PHOTO
-                        </span>
-
-                    </div>
-
-                    <div class="community-card-content">
-
-                        <span class="community-category">
-                            TRADITIONAL FOOD
-                        </span>
-
-                        <h3>
-                            Cooking Manok Pansuh
-                        </h3>
-
-                        <p>
-                            Sharing my experience trying one of
-                            Sarawak's traditional dishes.
-                        </p>
-
-                        <div class="community-meta">
-                            Shared by Michael · July 2026
-                        </div>
-
-                    </div>
-
-                </a>
-
-                <!-- =========================
-                     CONTRIBUTION 6
-                     ========================= -->
-
-                <a href="community_detail.php?id=6" class="community-card">
-
-                    <div class="community-image">
-
-                        <img
-                            src="image/food2.jpg"
-                            alt="Sarawak Coffee"
-                        >
-
-                        <span class="community-media">
-                            PHOTO
-                        </span>
-
-                    </div>
-
-                    <div class="community-card-content">
-
-                        <span class="community-category">
-                            LOCAL PRODUCT
-                        </span>
-
-                        <h3>
-                            Discovering Sarawak Coffee
-                        </h3>
-
-                        <p>
-                            Found a local coffee that quickly became
-                            part of my morning routine.
-                        </p>
-
-                        <div class="community-meta">
-                            Shared by Kevin · July 2026
-                        </div>
-
-                    </div>
-
-                </a>
+                <?php endif; ?>
 
             </div>
 
@@ -368,3 +226,10 @@ session_start();
 </body>
 
 </html>
+
+<?php
+
+// Close the database connection
+$conn->close();
+
+?>

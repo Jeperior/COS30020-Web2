@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2026 at 05:56 PM
+-- Generation Time: Nov 06, 2026 at 04:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,7 @@ INSERT INTO `account_table` (`email`, `password`, `type`) VALUES
 ('ainsley@example.com', '$2y$10$ALasCa93Q.f99CRNwUUmX.HM2lT33VXRcXreBeHciAEhr.kyPXPQO', 'user'),
 ('daniel@example.com', '$2y$10$kZPbQkLhNc4o/pz3GkHyc.xpvcI6awvMsRttjcNYdqfumQ2nkennW', 'user'),
 ('james@example.com', '$2y$10$oqLEcB4pgN/Wq/ofkMGu8OS8zh6s9YAjYI9cFs6zlm0fv4LoECOFq', 'user'),
-('michael.test@example.com', '$2y$10$zfR61IFPwvvZCyacGzCN6uQCEd8gpwMYoZGRSF2A.EpLwKWn2WwoK', 'user'),
+('maikuru@example.com', '$2y$10$zfR61IFPwvvZCyacGzCN6uQCEd8gpwMYoZGRSF2A.EpLwKWn2WwoK', 'user'),
 ('sarah@example.com', '$2y$10$nhr3szbDCkaPbbwRXLCNXOwWaqUrmN7Jd4kBX0P.j6sKJFPvQawWG', 'user');
 
 -- --------------------------------------------------------
@@ -92,10 +92,10 @@ CREATE TABLE `community_table` (
 --
 
 INSERT INTO `community_table` (`id`, `first_name`, `last_name`, `contribution_image`, `related_activity`, `status`) VALUES
-(1, 'James', 'Tan', NULL, 'Sarawak Food Festival', 'approved'),
-(2, 'Sarah', 'Lim', NULL, 'Traditional Cooking Workshop', 'approved'),
-(3, 'Daniel', 'Lee', NULL, 'Kuching Food Photography', 'pending'),
-(4, 'Ainsley', 'Sim', NULL, 'Local Food Sharing', 'pending');
+(1, 'James', 'Tan', 'image/food1.jpg', 'Sarawak Food Festival', 'approved'),
+(2, 'Sarah', 'Lim', 'image/food2.jpg', 'Traditional Cooking Workshop', 'approved'),
+(3, 'Daniel', 'Lee', 'image/food3.jpg', 'Kuching Food Photography', 'pending'),
+(4, 'Ainsley', 'Sim', 'image/food4.jpg', 'Local Food Sharing', 'pending');
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,8 @@ INSERT INTO `smart_feature_table` (`id`, `item_name`, `item_category`, `item_ima
 (1, 'Sarawak Laksa', 'Food', NULL, NULL, 'approved'),
 (2, 'Kolo Mee', 'Food', NULL, NULL, 'approved'),
 (3, 'Kek Lapis', 'Dessert', NULL, NULL, 'pending'),
-(4, 'Umai', 'Food', NULL, NULL, 'approved');
+(4, 'Umai', 'Food', NULL, NULL, 'approved'),
+(5, 'Sarawak Laksa', 'Food', 'smart_feature_images/ad2fd9265ed5bc63f3898f61345ffd2e.jpg', 'smart_feature_description/8f70bb2b4862a08b646cc8fe53ee3d25.pdf', 'pending');
 
 -- --------------------------------------------------------
 
@@ -135,20 +136,21 @@ CREATE TABLE `user_table` (
   `dob` date DEFAULT NULL,
   `gender` varchar(6) NOT NULL,
   `hometown` varchar(50) NOT NULL,
-  `profile_image` varchar(100) DEFAULT NULL
+  `profile_image` varchar(100) DEFAULT NULL,
+  `supporting_document` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_table`
 --
 
-INSERT INTO `user_table` (`email`, `first_name`, `last_name`, `dob`, `gender`, `hometown`, `profile_image`) VALUES
-('admin@swin.edu.my', 'Admin', 'Kuching', NULL, 'Male', 'Kuching', NULL),
-('ainsley@example.com', 'Ainsley', 'Sim', '2002-11-30', 'Female', 'Kuching', NULL),
-('daniel@example.com', 'Daniel', 'Lee', '2003-01-15', 'Male', 'Sibu', NULL),
-('james@example.com', 'James', 'Tan', '2003-05-12', 'Male', 'Kuching', NULL),
-('michael.test@example.com', 'Michael', 'Tan', '2003-01-14', 'Male', 'KUCHING', NULL),
-('sarah@example.com', 'Sarah', 'Lim', '2002-08-20', 'Female', 'Miri', NULL);
+INSERT INTO `user_table` (`email`, `first_name`, `last_name`, `dob`, `gender`, `hometown`, `profile_image`, `supporting_document`) VALUES
+('admin@swin.edu.my', 'Admin', 'Kuching', NULL, 'Male', 'Kuching', NULL, NULL),
+('ainsley@example.com', 'Ainsley', 'Sim', '2002-11-30', 'Female', 'Kuching', NULL, NULL),
+('daniel@example.com', 'Daniel', 'Lee', '2003-01-15', 'Male', 'Sibu', NULL, NULL),
+('james@example.com', 'Jessica', 'Pangestika', '2003-05-12', 'Female', 'Kuching', 'profile_images/90e6297b531ead0d682019d9b2ca3336.jpg', 'resume/2b4570917ffde64b3e7bed67e805c9dc.pdf'),
+('maikuru@example.com', 'Michael', 'Tan', '2003-01-14', 'Male', 'Fuzhou', 'profile_images/c89046dab6db7da464cda7ff83a9c84c.jpg', 'resume/b96d4e7a12ca09cc915eec8e1b1b73ec.pdf'),
+('sarah@example.com', 'Sarah', 'Lim', '2002-08-20', 'Female', 'Miri', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -204,7 +206,7 @@ ALTER TABLE `community_table`
 -- AUTO_INCREMENT for table `smart_feature_table`
 --
 ALTER TABLE `smart_feature_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

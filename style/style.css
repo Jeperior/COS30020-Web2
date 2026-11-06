@@ -1850,3 +1850,176 @@ footer a {
     font-weight: 600;
     margin-right: 5px;
 }
+
+/* =========================
+   SMART FEATURE ADD PAGE
+   ========================= */
+
+.smart-feature-page {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 70px 30px 80px;
+}
+
+.smart-feature-card {
+    background-color: white;
+    padding: 50px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.08);
+}
+
+.smart-feature-card h2 {
+    color: #214e34;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.smart-feature-intro {
+    color: #555;
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+/* Smart Feature branding */
+.smart-feature-brand {
+    color: #d96c3f;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+/* FORM */
+
+.smart-feature-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.smart-feature-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.smart-feature-form label {
+    color: #214e34;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.smart-feature-form input,
+.smart-feature-form select,
+.smart-feature-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    background-color: white;
+}
+
+.smart-feature-form input:focus,
+.smart-feature-form select:focus,
+.smart-feature-form textarea:focus {
+    outline: none;
+    border-color: #d96c3f;
+}
+
+.smart-feature-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.smart-feature-help {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 7px;
+}
+
+/* FORM BUTTONS */
+
+.smart-feature-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.smart-feature-actions button,
+.smart-feature-actions a {
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .smart-feature-page {
+        padding: 40px 20px;
+    }
+
+    .smart-feature-card {
+        padding: 30px 25px;
+    }
+
+    .smart-feature-card h2 {
+        font-size: 2rem;
+    }
+
+    .smart-feature-actions {
+        flex-direction: column;
+    }
+
+}
+
+/* =========================================
+   ADMIN MAIN MENU
+   ========================================= */
+
+/* Darker navigation bar to distinguish admin pages */
+.admin-navbar {
+    background-color: #183629;
+}
+
+.admin-navbar .logo,
+.admin-navbar nav a,
+.admin-navbar .nav-user {
+    color: #ffffff;
+}
+
+.admin-navbar nav a:hover {
+    color: #f4a261;
+}
+
+/* Admin dashboard cards */
+.admin-menu-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Admin management buttons */
+.admin-menu-card .admin-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.admin-menu-card .admin-links a {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #214e34;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-menu-card .admin-links a:hover {
+    background-color: #d96c3f;
+}
