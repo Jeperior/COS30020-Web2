@@ -1,7 +1,20 @@
 <?php
-session_start();
-?>
-<?php
+
+// =========================
+// AUTHENTICATION
+// =========================
+
+// Only logged-in regular users can register for activities.
+require_once "auth.php";
+requireLogin("user");
+
+// Connect to the database.
+require_once "db.php";
+
+
+// =========================
+// INITIALISE FORM VALUES
+// =========================
 
 $errors = [];
 
@@ -9,97 +22,122 @@ $first_name = "";
 $last_name = "";
 $contact_number = "";
 $email = "";
+
 $activity_datetime = "";
 $activity_title = "";
 
-/* =========================
-   ACTIVITY DATA
-   ========================= */
 
-$activities = [
+// =========================
+// GET SELECTED ACTIVITY ID
+// =========================
 
-    "1" => [
-        "type" => "FOOD TOUR",
-        "title" => "Kuching Food Walk",
-        "description" => "Explore some of Kuching's favourite local dishes while discovering the stories behind the city's food culture.",
-        "date" => "18 October 2026",
-        "time" => "10:00 AM – 1:00 PM",
-        "datetime" => "2026-10-18T10:00",
-        "venue" => "Kuching Waterfront",
-        "price" => "RM 35"
-    ],
+// Retrieve the activity ID from GET or POST.
+$activity_id = $_POST["activity_id"] ?? $_GET["activity"] ?? "";
 
-    "2" => [
-        "type" => "COOKING WORKSHOP",
-        "title" => "Sarawak Layer Cake Workshop",
-        "description" => "Learn the basics of making a traditional Sarawak layer cake and take home your own creation.",
-        "date" => "24 October 2026",
-        "time" => "2:00 PM – 4:00 PM",
-        "datetime" => "2026-10-24T14:00",
-        "venue" => "Kuching Community Hall",
-        "price" => "RM 45"
-    ],
-
-    "3" => [
-        "type" => "FOOD EXPERIENCE",
-        "title" => "Local Ingredients Experience",
-        "description" => "Discover local ingredients and learn how traditional Sarawakian foods are prepared and used.",
-        "date" => "1 November 2026",
-        "time" => "9:00 AM – 12:00 PM",
-        "datetime" => "2026-11-01T09:00",
-        "venue" => "Satok Weekend Market",
-        "price" => "RM 30"
-    ],
-
-    "4" => [
-        "type" => "COOKING CLASS",
-        "title" => "Traditional Sarawak Cooking Class",
-        "description" => "Learn how to prepare selected traditional Sarawakian dishes with guidance from local cooks.",
-        "date" => "8 November 2026",
-        "time" => "10:00 AM – 1:00 PM",
-        "datetime" => "2026-11-08T10:00",
-        "venue" => "Kuching Food Hub",
-        "price" => "RM 50"
-    ]
-
-];
-
-/* =========================
-   GET SELECTED ACTIVITY
-   ========================= */
-
-$activity_id = $_GET["activity"] ?? $_POST["activity_id"] ?? "1";
-
-if (!isset($activities[$activity_id])) {
-
-    $activity_id = "1";
-
+// Validate that the activity ID is a positive integer.
+if (
+    !filter_var($activity_id, FILTER_VALIDATE_INT) ||
+    (int) $activity_id <= 0
+) {
+    header("Location: activities.php");
+    exit;
 }
 
-$selected_activity = $activities[$activity_id];
+$activity_id = (int) $activity_id;
 
-/* =========================
-   DEFAULT ACTIVITY VALUES
-   ========================= */
 
-$activity_datetime = $selected_activity["datetime"];
-$activity_title = $selected_activity["title"];
+// =========================
+// FETCH SELECTED ACTIVITY
+// =========================
 
-/* =========================
-   PROCESS FORM
-   ========================= */
+// Retrieve the selected activity from the database.
+$sql = "SELECT *
+        FROM activity_table
+        WHERE id = ?";
+
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    die("Failed to prepare activity query: " . $conn->error);
+}
+
+$stmt->bind_param("i", $activity_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$selected_activity = $result->fetch_assoc();
+
+$stmt->close();
+
+
+// Redirect if the selected activity does not exist.
+if (!$selected_activity) {
+    header("Location: activities.php");
+    exit;
+}
+
+
+// =========================
+// PREPARE ACTIVITY DETAILS
+// =========================
+
+// Escape database values before displaying them.
+$activityType = htmlspecialchars($selected_activity["activity_type"]);
+$activityName = htmlspecialchars($selected_activity["activity_name"]);
+$activityDescription = htmlspecialchars($selected_activity["description"]);
+$activityVenue = htmlspecialchars($selected_activity["venue"]);
+
+// Format the activity date and time.
+$formattedDate = date(
+    "d F Y",
+    strtotime($selected_activity["date"])
+);
+
+$formattedTime = date(
+    "g:i A",
+    strtotime($selected_activity["time"])
+);
+
+// Format the activity price.
+$formattedPrice = "RM " . number_format(
+    (float) $selected_activity["price"],
+    2
+);
+
+// Prepare the database date and time for the form.
+$activity_datetime =
+    $selected_activity["date"] . "T" .
+    substr($selected_activity["time"], 0, 5);
+
+// Retrieve the activity title from the database.
+$activity_title = $selected_activity["activity_name"];
+
+
+// =========================
+// PROCESS REGISTRATION FORM
+// =========================
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    require "process_activity.php";
+    // Retrieve the user's submitted information.
+    $first_name = trim($_POST["first_name"] ?? "");
+    $last_name = trim($_POST["last_name"] ?? "");
+    $contact_number = trim($_POST["contact_number"] ?? "");
+    $email = trim($_POST["email"] ?? "");
 
+    // Use the database activity details instead of trusting
+    // the activity title and date submitted by the browser.
+    require "process_activity.php";
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -108,6 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>
         Activity Registration | Kuching Bites
     </title>
+
 </head>
 
 <body>
@@ -136,31 +175,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 Profile
             </a>
 
-            <?php if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true): ?>
+            <span class="nav-user">
+                Logged in
+            </span>
 
-                <span class="nav-user">
-                    Logged in
-                </span>
-
-                <a href="logout.php">
-                    Logout
-                </a>
-
-            <?php else: ?>
-
-                <a href="login.php">
-                    Login
-                </a>
-
-                <a href="registration.php">
-                    Register
-                </a>
-
-            <?php endif; ?>
+            <a href="logout.php">
+                Logout
+            </a>
 
         </nav>
 
     </header>
+
 
     <!-- =========================
          ACTIVITY REGISTRATION
@@ -186,6 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     Register your details for the selected Kuching Bites activity.
                 </p>
 
+
                 <!-- =========================
                      SELECTED ACTIVITY DETAILS
                      ========================= -->
@@ -193,22 +220,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="activity-registration-details">
 
                     <p class="activity-type">
-                        <?php
-                        echo htmlspecialchars($selected_activity["type"]);
-                        ?>
+                        <?php echo $activityType; ?>
                     </p>
 
                     <h3>
-                        <?php
-                        echo htmlspecialchars($selected_activity["title"]);
-                        ?>
+                        <?php echo $activityName; ?>
                     </h3>
 
                     <p>
-                        <?php
-                        echo htmlspecialchars($selected_activity["description"]);
-                        ?>
+                        <?php echo $activityDescription; ?>
                     </p>
+
 
                     <div class="activity-registration-info">
 
@@ -219,12 +241,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </span>
 
                             <strong>
-                                <?php
-                                echo htmlspecialchars($selected_activity["date"]);
-                                ?>
+                                <?php echo htmlspecialchars($formattedDate); ?>
                             </strong>
 
                         </div>
+
 
                         <div>
 
@@ -233,12 +254,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </span>
 
                             <strong>
-                                <?php
-                                echo htmlspecialchars($selected_activity["time"]);
-                                ?>
+                                <?php echo htmlspecialchars($formattedTime); ?>
                             </strong>
 
                         </div>
+
 
                         <div>
 
@@ -247,12 +267,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </span>
 
                             <strong>
-                                <?php
-                                echo htmlspecialchars($selected_activity["venue"]);
-                                ?>
+                                <?php echo $activityVenue; ?>
                             </strong>
 
                         </div>
+
 
                         <div>
 
@@ -261,9 +280,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </span>
 
                             <strong>
-                                <?php
-                                echo htmlspecialchars($selected_activity["price"]);
-                                ?>
+                                <?php echo htmlspecialchars($formattedPrice); ?>
                             </strong>
 
                         </div>
@@ -271,6 +288,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                 </div>
+
 
                 <!-- =========================
                      ERROR MESSAGES
@@ -289,9 +307,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <?php foreach ($errors as $error): ?>
 
                                 <li>
-                                    <?php
-                                    echo htmlspecialchars($error);
-                                    ?>
+                                    <?php echo htmlspecialchars($error); ?>
                                 </li>
 
                             <?php endforeach; ?>
@@ -302,6 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <?php endif; ?>
 
+
                 <!-- =========================
                      SUCCESS MESSAGE
                      ========================= -->
@@ -310,31 +327,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <div class="profile-message success">
 
-                        <?php
-                        echo htmlspecialchars($success_message);
-                        ?>
+                        <?php echo htmlspecialchars($success_message); ?>
 
                     </div>
 
                 <?php endif; ?>
+
 
                 <!-- =========================
                      REGISTRATION FORM
                      ========================= -->
 
                 <form
-                    action="activity_reg.php?activity=<?php echo urlencode($activity_id); ?>"
+                    action="activity_reg.php?activity=<?php echo urlencode((string) $activity_id); ?>"
                     method="POST"
                     class="registration-form"
                 >
 
-                    <!-- ACTIVITY ID -->
+                    <!-- Keep the selected database activity ID. -->
 
                     <input
                         type="hidden"
                         name="activity_id"
-                        value="<?php echo htmlspecialchars($activity_id); ?>"
+                        value="<?php echo htmlspecialchars((string) $activity_id); ?>"
                     >
+
 
                     <!-- FIRST NAME -->
 
@@ -354,6 +371,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     </div>
 
+
                     <!-- LAST NAME -->
 
                     <div class="form-group">
@@ -371,6 +389,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         >
 
                     </div>
+
 
                     <!-- CONTACT NUMBER -->
 
@@ -390,6 +409,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     </div>
 
+
                     <!-- EMAIL -->
 
                     <div class="form-group">
@@ -399,7 +419,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </label>
 
                         <input
-                            type="text"
+                            type="email"
                             id="email"
                             name="email"
                             value="<?php echo htmlspecialchars($email); ?>"
@@ -407,6 +427,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         >
 
                     </div>
+
 
                     <!-- ACTIVITY DATE AND TIME -->
 
@@ -421,10 +442,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             id="activity_datetime"
                             name="activity_datetime"
                             value="<?php echo htmlspecialchars($activity_datetime); ?>"
-                            required
+                            readonly
                         >
 
                     </div>
+
 
                     <!-- ACTIVITY TITLE -->
 
@@ -439,10 +461,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             id="activity_title"
                             name="activity_title"
                             value="<?php echo htmlspecialchars($activity_title); ?>"
-                            required
+                            readonly
                         >
 
                     </div>
+
 
                     <!-- BUTTONS -->
 
@@ -473,6 +496,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </main>
 
+
     <!-- =========================
          FOOTER
          ========================= -->
@@ -485,33 +509,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </footer>
 
-        <script>
 
-            function resetActivityForm() {
+    <!-- =========================
+         RESET FORM SCRIPT
+         ========================= -->
 
-                document.getElementById("first_name").value = "";
-                document.getElementById("last_name").value = "";
-                document.getElementById("contact_number").value = "";
-                document.getElementById("email").value = "";
+    <script>
 
-            /*
-            * Keep the selected activity.
-            * Only clear the user's personal information.
-            */
+        function resetActivityForm() {
 
-            // Remove error messages
-            const errorMessage = document.querySelector(".profile-message.error");
+            // Clear the user's personal information.
+            document.getElementById("first_name").value = "";
+            document.getElementById("last_name").value = "";
+            document.getElementById("contact_number").value = "";
+            document.getElementById("email").value = "";
+
+            // Keep the selected activity details unchanged.
+
+            // Remove existing error messages.
+            const errorMessage = document.querySelector(
+                ".profile-message.error"
+            );
 
             if (errorMessage) {
-
                 errorMessage.remove();
-
-                }
-
             }
 
-        </script>
+        }
 
-    </body>
+    </script>
 
+</body>
 </html>

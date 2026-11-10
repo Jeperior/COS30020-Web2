@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2026 at 04:35 PM
+-- Generation Time: Nov 10, 2026 at 09:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,24 +53,24 @@ INSERT INTO `account_table` (`email`, `password`, `type`) VALUES
 
 CREATE TABLE `activity_table` (
   `id` int(11) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `date` date DEFAULT NULL,
-  `time` time DEFAULT NULL,
-  `contact_number` varchar(15) DEFAULT NULL,
-  `status` varchar(10) NOT NULL
+  `activity_name` varchar(100) NOT NULL,
+  `activity_type` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  `venue` varchar(100) NOT NULL,
+  `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `activity_table`
 --
 
-INSERT INTO `activity_table` (`id`, `email`, `first_name`, `last_name`, `date`, `time`, `contact_number`, `status`) VALUES
-(1, 'james@example.com', 'James', 'Tan', '2026-11-15', '10:00:00', '0123456789', 'approved'),
-(2, 'sarah@example.com', 'Sarah', 'Lim', '2026-11-20', '14:00:00', '0123456788', 'pending'),
-(3, 'daniel@example.com', 'Daniel', 'Lee', '2026-11-25', '09:00:00', '0123456787', 'approved'),
-(4, 'ainsley@example.com', 'Ainsley', 'Sim', '2026-12-01', '15:00:00', '0123456786', 'pending');
+INSERT INTO `activity_table` (`id`, `activity_name`, `activity_type`, `description`, `date`, `time`, `venue`, `price`) VALUES
+(1, 'Kuching Food Walk', 'FOOD TOUR', 'Explore some of Kuching\'s favourite local dishes while discovering the stories behind the city\'s food culture.', '2026-10-18', '10:00:00', 'Kuching Waterfront', 35.00),
+(2, 'Sarawak Layer Cake Workshop', 'COOKING WORKSHOP', 'Learn the basics of making a traditional Sarawak layer cake and take home your own creation.', '2026-10-24', '14:00:00', 'Kuching Community Hall', 45.00),
+(3, 'Local Ingredients Experience', 'FOOD EXPERIENCE', 'Discover local ingredients and learn how traditional Sarawakian foods are prepared and used.', '2026-11-01', '09:00:00', 'Satok Weekend Market', 30.00),
+(4, 'Traditional Sarawak Cooking Class', 'COOKING CLASS', 'Learn how to prepare selected traditional Sarawakian dishes with guidance from local cooks.', '2026-11-08', '10:00:00', 'Kuching Food Hub', 50.00);
 
 -- --------------------------------------------------------
 
@@ -122,6 +122,35 @@ INSERT INTO `smart_feature_table` (`id`, `item_name`, `item_category`, `item_ima
 (3, 'Kek Lapis', 'Dessert', NULL, NULL, 'pending'),
 (4, 'Umai', 'Food', NULL, NULL, 'approved'),
 (5, 'Sarawak Laksa', 'Food', 'smart_feature_images/ad2fd9265ed5bc63f3898f61345ffd2e.jpg', 'smart_feature_description/8f70bb2b4862a08b646cc8fe53ee3d25.pdf', 'pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_activities`
+--
+
+CREATE TABLE `users_activities` (
+  `id` int(11) NOT NULL,
+  `activity_id` int(11) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  `contact_number` varchar(15) DEFAULT NULL,
+  `status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users_activities`
+--
+
+INSERT INTO `users_activities` (`id`, `activity_id`, `email`, `first_name`, `last_name`, `date`, `time`, `contact_number`, `status`) VALUES
+(1, NULL, 'james@example.com', 'James', 'Tan', '2026-11-15', '10:00:00', '0123456789', 'approved'),
+(2, NULL, 'sarah@example.com', 'Sarah', 'Lim', '2026-11-20', '14:00:00', '0123456788', 'pending'),
+(3, NULL, 'daniel@example.com', 'Daniel', 'Lee', '2026-11-25', '09:00:00', '0123456787', 'approved'),
+(4, NULL, 'ainsley@example.com', 'Ainsley', 'Sim', '2026-12-01', '15:00:00', '0123456786', 'pending'),
+(5, 1, 'james@example.com', 'Jason', 'Pangestu', '2026-10-18', '10:00:00', '088976647405', 'pending');
 
 -- --------------------------------------------------------
 
@@ -181,6 +210,12 @@ ALTER TABLE `smart_feature_table`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users_activities`
+--
+ALTER TABLE `users_activities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user_table`
 --
 ALTER TABLE `user_table`
@@ -206,6 +241,12 @@ ALTER TABLE `community_table`
 -- AUTO_INCREMENT for table `smart_feature_table`
 --
 ALTER TABLE `smart_feature_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users_activities`
+--
+ALTER TABLE `users_activities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
