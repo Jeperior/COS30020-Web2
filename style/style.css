@@ -2023,3 +2023,632 @@ footer a {
 .admin-menu-card .admin-links a:hover {
     background-color: #d96c3f;
 }
+
+/* =========================================
+   MANAGE ACCOUNTS DASHBOARD
+   ========================================= */
+
+.manage-accounts-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 65px 30px 80px;
+}
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+.manage-accounts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.manage-accounts-header h2 {
+    color: #214e34;
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.manage-accounts-header p:not(.section-label) {
+    color: #666;
+    line-height: 1.6;
+}
+
+.manage-accounts-header button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* =========================
+   STATISTICS CARDS
+   ========================= */
+
+.account-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.account-stat-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.06);
+    border-left: 5px solid #d96c3f;
+}
+
+.account-stat-card p {
+    color: #777;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.account-stat-card h3 {
+    color: #214e34;
+    font-size: 2.2rem;
+}
+
+/* =========================
+   ACCOUNT TABLE CARD
+   ========================= */
+
+.account-table-card {
+    background-color: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.08);
+}
+
+.account-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.account-table-header h3 {
+    color: #214e34;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.account-table-header p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   SEARCH
+   ========================= */
+
+.account-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-search input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    min-width: 200px;
+}
+
+.account-search input:focus {
+    outline: none;
+    border-color: #d96c3f;
+}
+
+.account-search button,
+.account-search a {
+    border: none;
+    cursor: pointer;
+}
+
+/* =========================
+   TABLE
+   ========================= */
+
+.account-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.account-table th {
+    background-color: #f7f4ed;
+    color: #214e34;
+    font-size: 0.85rem;
+    padding: 17px 15px;
+    white-space: nowrap;
+}
+
+.account-table td {
+    color: #555;
+    font-size: 0.9rem;
+    padding: 18px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.account-table tbody tr:hover {
+    background-color: #fffaf3;
+}
+
+/* =========================
+   ACTION BUTTONS
+   ========================= */
+
+.account-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.account-edit-btn,
+.account-delete-btn {
+    padding: 8px 13px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.account-edit-btn {
+    background-color: #e7f4eb;
+    color: #214e34;
+}
+
+.account-delete-btn {
+    background-color: #fbe9e3;
+    color: #a9472a;
+}
+
+/* =========================
+   EMPTY STATE
+   ========================= */
+
+.account-empty {
+    text-align: center;
+    padding: 40px !important;
+    color: #888 !important;
+}
+
+/* =========================
+   TABLE FOOTER
+   ========================= */
+
+.account-table-footer {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 15px;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.account-table-footer strong {
+    color: #214e34;
+}
+
+/* =========================
+   BACK BUTTON
+   ========================= */
+
+.account-back {
+    margin-top: 30px;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 850px) {
+
+    .account-table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .account-search {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .account-search input {
+        flex: 1;
+        min-width: 150px;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .manage-accounts-page {
+        padding: 45px 20px 60px;
+    }
+
+    .manage-accounts-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .manage-accounts-header h2 {
+        font-size: 2rem;
+    }
+
+    .account-statistics {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .account-table-card {
+        padding: 25px 18px;
+    }
+
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+/* Keep Manage Accounts layout width consistent */
+.manage-accounts-page {
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.manage-accounts-header,
+.account-statistics,
+.account-table-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.account-stat-card {
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.account-table-card {
+    min-width: 0;
+}
+
+.account-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* =========================================
+   ADD USER FORM - REGISTRATION PAGE DESIGN
+   ========================================= */
+
+.add-user-card {
+    max-width: 790px;
+    width: 100%;
+    margin: 40px auto 50px;
+    padding: 50px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 10px 35px rgba(33, 78, 52, 0.08);
+    box-sizing: border-box;
+}
+
+/* Heading section */
+
+.add-user-heading {
+    text-align: left;
+    margin-bottom: 38px;
+}
+
+.add-user-heading::before {
+    content: "ADMINISTRATION";
+    display: block;
+    color: #d96c3f;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.add-user-heading h3 {
+    color: #214e34;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 18px;
+    line-height: 1.2;
+}
+
+.add-user-heading p {
+    color: #666666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Form layout */
+
+.add-user-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+}
+
+.add-user-form-grid .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+}
+
+.add-user-form-grid label {
+    color: #214e34;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.add-user-form-grid input,
+.add-user-form-grid select {
+    width: 100%;
+    min-height: 49px;
+    padding: 13px 16px;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.add-user-form-grid input:focus,
+.add-user-form-grid select:focus {
+    outline: none;
+    border-color: #d96c3f;
+}
+
+.add-user-form-grid small {
+    color: #888888;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+/* Form buttons */
+
+.add-user-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.add-user-actions button,
+.add-user-actions a {
+    min-width: 135px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive layout */
+
+@media (max-width: 650px) {
+
+    .add-user-card {
+        padding: 35px 25px;
+        margin: 25px auto 35px;
+    }
+
+    .add-user-heading h3 {
+        font-size: 2rem;
+    }
+
+    .add-user-actions {
+        flex-direction: column;
+    }
+
+    .add-user-actions button,
+    .add-user-actions a {
+        width: 100%;
+    }
+
+}
+
+/* Add User Form Buttons */
+.add-user-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+/* Create Account button */
+.add-user-actions button {
+    min-width: 102px;
+    padding: 12px 25px;
+    background-color: #d96c3f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-user-actions button:hover {
+    background-color: #c45b32;
+}
+
+/* Cancel button */
+.add-user-actions a {
+    min-width: 80px;
+    padding: 12px 20px;
+    background-color: white;
+    color: #214e34;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.add-user-actions a:hover {
+    background-color: #f5f5f5;
+}
+
+/* Prevent long email addresses from overlapping table columns */
+.account-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.account-table th,
+.account-table td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    padding: 15px 12px;
+    vertical-align: middle;
+}
+
+/* Give each column an appropriate width */
+.account-table th:nth-child(1) { width: 13%; }
+.account-table th:nth-child(2) { width: 13%; }
+.account-table th:nth-child(3) { width: 25%; }
+.account-table th:nth-child(4) { width: 12%; }
+.account-table th:nth-child(5) { width: 15%; }
+.account-table th:nth-child(6) { width: 22%; }
+
+/* ========================================
+   SUCCESS AND ERROR TOAST NOTIFICATIONS
+======================================== */
+
+.account-toast {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    max-width: 420px;
+    min-width: 300px;
+    padding: 16px 22px;
+
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    animation: accountToastFade 4.5s ease forwards;
+}
+
+/* Success notification */
+.account-toast-success {
+    background-color: #e8f5e9;
+    color: #245c38;
+    border-left: 5px solid #3b995c;
+}
+
+/* Error notification */
+.account-toast-error {
+    background-color: #fdecec;
+    color: #a83232;
+    border-left: 5px solid #dc4545;
+}
+
+/* Icon */
+.account-toast .toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+}
+
+.account-toast-success .toast-icon {
+    background-color: #3b995c;
+}
+
+.account-toast-error .toast-icon {
+    background-color: #dc4545;
+}
+
+/* Notification text */
+.account-toast .toast-message {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Animation */
+@keyframes accountToastFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    10%, 75% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+        visibility: hidden;
+    }
+}
+
+/* Make Edit and Delete button look clickable */
+.account-edit-btn {
+    cursor: pointer !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.account-edit-btn:hover {
+    cursor: pointer !important;
+}
+
+.account-delete-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.account-actions .account-delete-btn {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}
+
+.account-actions .account-delete-form {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.account-actions .account-delete-form button {
+    cursor: pointer !important;
+}

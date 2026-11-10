@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2026 at 09:13 AM
+-- Generation Time: Nov 10, 2026 at 10:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,6 +42,7 @@ INSERT INTO `account_table` (`email`, `password`, `type`) VALUES
 ('ainsley@example.com', '$2y$10$ALasCa93Q.f99CRNwUUmX.HM2lT33VXRcXreBeHciAEhr.kyPXPQO', 'user'),
 ('daniel@example.com', '$2y$10$kZPbQkLhNc4o/pz3GkHyc.xpvcI6awvMsRttjcNYdqfumQ2nkennW', 'user'),
 ('james@example.com', '$2y$10$oqLEcB4pgN/Wq/ofkMGu8OS8zh6s9YAjYI9cFs6zlm0fv4LoECOFq', 'user'),
+('jasonpangestu2@gmail.com', '$2y$10$6YlDZRo//EykBC3WGOi/j.UsJkecUpnPH3I85GsYUt67AvdnreUui', 'user'),
 ('maikuru@example.com', '$2y$10$zfR61IFPwvvZCyacGzCN6uQCEd8gpwMYoZGRSF2A.EpLwKWn2WwoK', 'user'),
 ('sarah@example.com', '$2y$10$nhr3szbDCkaPbbwRXLCNXOwWaqUrmN7Jd4kBX0P.j6sKJFPvQawWG', 'user');
 
@@ -175,9 +176,10 @@ CREATE TABLE `user_table` (
 
 INSERT INTO `user_table` (`email`, `first_name`, `last_name`, `dob`, `gender`, `hometown`, `profile_image`, `supporting_document`) VALUES
 ('admin@swin.edu.my', 'Admin', 'Kuching', NULL, 'Male', 'Kuching', NULL, NULL),
-('ainsley@example.com', 'Ainsley', 'Sim', '2002-11-30', 'Female', 'Kuching', NULL, NULL),
+('ainsley@example.com', 'Ainsley', 'Simorangkir', '2002-11-30', 'Female', 'Kuching', NULL, NULL),
 ('daniel@example.com', 'Daniel', 'Lee', '2003-01-15', 'Male', 'Sibu', NULL, NULL),
 ('james@example.com', 'Jessica', 'Pangestika', '2003-05-12', 'Female', 'Kuching', 'profile_images/90e6297b531ead0d682019d9b2ca3336.jpg', 'resume/2b4570917ffde64b3e7bed67e805c9dc.pdf'),
+('jasonpangestu2@gmail.com', 'Jason', 'Pangestu', '2007-01-25', 'Male', 'KUCHING', NULL, NULL),
 ('maikuru@example.com', 'Michael', 'Tan', '2003-01-14', 'Male', 'Fuzhou', 'profile_images/c89046dab6db7da464cda7ff83a9c84c.jpg', 'resume/b96d4e7a12ca09cc915eec8e1b1b73ec.pdf'),
 ('sarah@example.com', 'Sarah', 'Lim', '2002-08-20', 'Female', 'Miri', NULL, NULL);
 
