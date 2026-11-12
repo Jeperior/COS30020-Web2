@@ -2652,3 +2652,697 @@ html {
 .account-actions .account-delete-form button {
     cursor: pointer !important;
 }
+
+/* MANAGE ACTIVITY REGISTRATIONS */
+.activity-statistics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.manage-activities-page {
+    max-width: 1200px;
+}
+
+.activity-registration-table {
+    min-width: 1250px;
+    table-layout: auto;
+}
+
+.activity-registration-table th,
+.activity-registration-table td {
+    overflow-wrap: normal;
+}
+
+.activity-registration-table th:nth-child(n) {
+    width: auto;
+}
+
+.activity-registration-table th,
+.activity-registration-table td {
+    white-space: nowrap;
+}
+
+.activity-registration-table td:last-child {
+    min-width: 300px;
+}
+
+.activity-registration-table .community-action-buttons {
+    grid-template-columns: repeat(4, max-content);
+}
+
+@media (max-width: 650px) {
+    .activity-statistics {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   MANAGE COMMUNITY PAGE
+   ========================================= */
+
+.manage-community-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 65px 30px 80px;
+    box-sizing: border-box;
+}
+
+/* PAGE HEADER */
+
+.community-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.community-page-header h1 {
+    color: #214e34;
+    font-size: 2.5rem;
+    margin: 12px 0;
+}
+
+.community-page-header p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.section-label {
+    display: block;
+    color: #d96c3f;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+/* ADD CONTRIBUTION BUTTON */
+
+.community-add-btn {
+    padding: 12px 24px;
+    background-color: #d96c3f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.community-add-btn:hover {
+    background-color: #c45b32;
+}
+
+/* STATISTICS */
+
+.community-statistics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.community-stat-card {
+    min-width: 0;
+    min-height: 138px;
+    padding: 30px;
+    background-color: white;
+    border-left: 5px solid #d96c3f;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.06);
+    box-sizing: border-box;
+}
+
+.community-stat-card h3 {
+    color: #777;
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+}
+
+.community-stat-card p {
+    color: #214e34;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* COMMUNITY TABLE CONTAINER */
+
+.community-table-card {
+    width: 100%;
+    min-width: 0;
+    padding: 35px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.08);
+    box-sizing: border-box;
+}
+
+.community-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.community-table-header h2 {
+    color: #214e34;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.community-table-header p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* SEARCH */
+
+.community-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.community-search input {
+    min-width: 200px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+.community-search input:focus {
+    outline: none;
+    border-color: #d96c3f;
+}
+
+.community-search button {
+    padding: 12px 24px;
+    background-color: #d96c3f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.community-search button:hover {
+    background-color: #c45b32;
+}
+
+.community-search a {
+    color: #214e34;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+/* TABLE */
+
+.community-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.community-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.community-table th {
+    padding: 17px 15px;
+    background-color: #f7f4ed;
+    color: #214e34;
+    font-size: 0.85rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.community-table td {
+    padding: 18px 15px;
+    color: #555;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.community-table tbody tr:hover {
+    background-color: #fffaf3;
+}
+
+.community-table th:nth-child(1) {
+    width: 6%;
+}
+
+.community-table th:nth-child(2) {
+    width: 16%;
+}
+
+.community-table th:nth-child(3) {
+    width: 22%;
+}
+
+.community-table th:nth-child(4) {
+    width: 10%;
+}
+
+.community-table th:nth-child(5) {
+    width: 13%;
+}
+
+.community-table th:nth-child(6) {
+    width: 33%;
+}
+
+/* IMAGE BUTTON */
+
+.community-view-image {
+    padding: 0;
+    background: none;
+    border: none;
+    color: #d96c3f;
+    font-family: Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.community-view-image:hover {
+    color: #c45b32;
+    text-decoration: underline;
+}
+
+.community-no-image {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* STATUS BADGES */
+
+.community-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 82px;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.status-pending {
+    background-color: #fff0d5;
+    color: #a96500;
+}
+
+.status-approved {
+    background-color: #e5f3e9;
+    color: #267044;
+}
+
+.status-rejected {
+    background-color: #fbe9e3;
+    color: #a9472a;
+}
+
+/* ACTION BUTTONS */
+
+.community-action-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    align-items: center;
+    gap: 8px;
+}
+
+.community-action-buttons form {
+    display: contents;
+    margin: 0;
+}
+
+.community-edit-btn,
+.community-approve-btn,
+.community-reject-btn,
+.community-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    height: 34px;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* EDIT */
+
+.community-edit-btn {
+    background-color: #e7f4eb;
+    color: #214e34;
+}
+
+.community-edit-btn:hover {
+    background-color: #d5eadb;
+}
+
+/* APPROVE */
+
+.community-approve-btn {
+    background-color: #29945e;
+    color: white;
+}
+
+.community-approve-btn:hover {
+    background-color: #217b4e;
+}
+
+/* REJECT */
+
+.community-reject-btn {
+    background-color: #d96c3f;
+    color: white;
+}
+
+.community-reject-btn:hover {
+    background-color: #c45b32;
+}
+
+/* DELETE */
+
+.community-delete-btn {
+    background-color: #fbe9e3;
+    color: #a9472a;
+}
+
+.community-delete-btn:hover {
+    background-color: #f6d8ce;
+}
+
+/* DISABLED BUTTONS */
+
+.community-approve-btn:disabled,
+.community-reject-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* EMPTY TABLE */
+
+.community-empty {
+    text-align: center;
+    padding: 40px !important;
+    color: #888 !important;
+}
+
+/* ADD / EDIT FORM */
+
+.community-form-card {
+    max-width: 790px;
+    width: 100%;
+    margin: 0 auto 40px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(33, 78, 52, 0.08);
+    box-sizing: border-box;
+}
+
+.community-form-heading {
+    margin-bottom: 30px;
+}
+
+.community-form-heading h2 {
+    color: #214e34;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.community-form-heading p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.community-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 20px;
+}
+
+.community-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.community-form-group label,
+.community-current-image label {
+    color: #214e34;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.community-form-group input {
+    width: 100%;
+    min-height: 49px;
+    padding: 12px 14px;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.community-form-group input:focus {
+    outline: none;
+    border-color: #d96c3f;
+}
+
+.community-form-group small {
+    color: #888;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+/* CURRENT IMAGE */
+
+.community-current-image {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.community-current-image img {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* FORM BUTTONS */
+
+.community-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.community-submit-btn,
+.community-cancel-btn {
+    min-width: 120px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.community-submit-btn {
+    background-color: #d96c3f;
+    color: white;
+}
+
+.community-submit-btn:hover {
+    background-color: #c45b32;
+}
+
+.community-cancel-btn {
+    background-color: #e7f4eb;
+    color: #214e34;
+}
+
+.community-cancel-btn:hover {
+    background-color: #d5eadb;
+}
+
+/* SUCCESS AND ERROR MESSAGES */
+
+.community-message {
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.community-message.success {
+    background-color: #e8f5e9;
+    color: #245c38;
+    border-left: 5px solid #3b995c;
+}
+
+.community-message.error {
+    background-color: #fdecec;
+    color: #a83232;
+    border-left: 5px solid #dc4545;
+}
+
+/* IMAGE POPUP */
+
+.image-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.image-popup-content {
+    position: relative;
+    max-width: 900px;
+    max-height: 85vh;
+    padding: 12px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.image-popup-content img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.image-popup-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background-color: #d96c3f;
+    color: white;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.image-popup-close:hover {
+    background-color: #c45b32;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .community-statistics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .community-table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .community-search {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .community-search input {
+        flex: 1;
+        min-width: 150px;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .manage-community-page {
+        padding: 45px 20px 60px;
+    }
+
+    .community-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .community-page-header h1 {
+        font-size: 2rem;
+    }
+
+    .community-statistics {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .community-table-card {
+        padding: 25px 18px;
+    }
+
+    .community-form-card {
+        padding: 30px 22px;
+    }
+
+    .community-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .community-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .community-submit-btn,
+    .community-cancel-btn {
+        width: 100%;
+    }
+
+    .community-action-buttons {
+        grid-template-columns: repeat(2, max-content);
+    }
+
+    .image-popup {
+        padding: 20px;
+    }
+
+}

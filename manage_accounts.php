@@ -641,7 +641,7 @@ if ($result) {
 
     <link rel="stylesheet" href="style/style.css?v=7">
 
-    <title>Kuching Bites - Manage Accounts</title>
+    <title>Manage Accounts - Kuching Bites</title>
 
 </head>
 
